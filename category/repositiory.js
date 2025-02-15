@@ -16,6 +16,26 @@ export const getCategoryRepo = async () => {
     }
 }
 
+export const getCategoryByIdRepo = async (id) => {
+    try {
+        const query = `
+            SELECT id, name
+            FROM category WHERE id = ?
+        `;
+
+        const [rows] = await db.execute(query, [id]);
+        if (rows.length === 0) {
+            return null;
+        }
+
+        return(rows);
+    } catch (err) {
+        console.log("Error: ", err.message)
+        throw new Error("Something went wrong!");
+        
+    }
+};
+
 export const createCategoryRepo = async (name) => {
 
     try {
@@ -37,3 +57,36 @@ export const createCategoryRepo = async (name) => {
         throw new Error("Something went wrong!");
     }
 }
+
+export const updateCategoryRepo = async (id, name) => {
+    try {
+        const query = `
+            UPDATE category SET name = ? WHERE id = ?
+        `;
+
+        const [rows] = await db.execute(query, [name, id]);
+        if (rows.length === 0) {
+            return null;
+        }
+
+        return(rows);
+    } catch (err) {
+        console.log("Error: ", err.message)
+        throw new Error("Something went wrong!");
+        
+    }
+};
+
+export const deleteCategoryRepo = async (id) => {
+    try {
+        const query = `
+            DELETE FROM category WHERE id = ?
+        `;
+
+        return await db.execute(query, [id]);
+    } catch (err) {
+        console.log("Error: ", err.message)
+        throw new Error("Something went wrong!");
+        
+    }
+};
